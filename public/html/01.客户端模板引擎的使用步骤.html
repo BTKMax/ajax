@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<!-- 1. 将模板引擎库文件引入当前页面 -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<script src="../js/jquery-3.5.1.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/template-web.js"></script>
+</head>
+<body>
+<div id="container"></div>
+
+<!-- 2. 准备art-template模板 -->
+<script id="tpl" type="text/html">
+	<h1>{{name}}{{age}}</h1>
+</script>
+<script type="text/javascript">
+	// 告诉模板引擎哪个数据和哪个模板进行拼接
+	// 方法的返回值就是拼接好的html字符串
+	let html = template('tpl', {
+	    name: '张三',
+		age: 30
+	});
+    document.querySelector('#container').innerHTML = html;
+</script>
+</body>
+</html>

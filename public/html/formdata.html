@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<script src="../js/jquery-3.5.1.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/template-web.js"></script>
+</head>
+<body>
+<form id="formdata">
+	<input type="text" name="username">
+	<input type="text" name="password">
+	<input type="button" id="btn" value="提交">
+</form>
+
+<script type="text/javascript">
+    // var formdata = new FormData();
+    $("#btn").on('click', function () {
+        // 将普通的html表单转成formdata表单对象
+        var formdata = new FormData($("#formdata")[0]);
+        // 获取对应表单属性的值
+        formdata.get('username')
+        
+        // 如果有表单属性存在则替换原有的值, 如果表单属性不存在则创建
+        formdata.set('username', 'lisi');
+        
+        // 删除对应表单属性的值
+        formdata.delete('username');
+        
+        // 向表单对象追加值
+	    formdata.append('age', 18);
+        $.ajax({
+            url: '/formdata',
+            type: 'POST',
+            data: formdata,
+	        processData: false,
+	        contentType: false,
+            success: (result) => {
+                console.log(result);
+            },
+            error: (err) => {
+                console.log(err);
+            }
+        })
+    })
+</script>
+</body>
+</html>

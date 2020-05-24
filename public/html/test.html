@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<script src="../js/jquery-3.5.1.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/template-web.js"></script>
+</head>
+<body>
+<form id="form">
+	<input id="username" type="text" name="username">
+	<input id="password" type="text" name="password">
+	<input id="btn" type="submit" value="提交">
+</form>
+<script type="text/javascript">
+    var btn = $("#btn");
+    // btn.on('click', () => {
+    //     var username = $("#username").val();
+    //     var password = $("#password").val();
+    //     $.ajax({
+    //         url: '/json',
+    //         type: 'POST',
+    //         data: {
+    //             username: username,
+    //             password: password
+    //         },
+    //         contentType: 'application/json',
+    //         success: (result) => {
+    //             console.log(result);
+    //         }
+    //     })
+    // });
+    
+    $("#form").on('submit', ()=>{
+        let value = serializeValue($("#form"));
+        // console.log(value);
+	    return false;
+    });
+
+    function serializeValue(obj) {
+        var result = {};
+        var form = obj.serializeArray();
+        $.each(form, (index, value) => {
+			result[value.name] = value.value;
+        });
+        console.log(result)
+
+    }
+</script>
+</body>
+</html>

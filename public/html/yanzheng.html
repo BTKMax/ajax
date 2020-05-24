@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<!-- 1. 将模板引擎库文件引入当前页面 -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<script src="../js/jquery-3.5.1.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/template-web.js"></script>
+</head>
+<body>
+<div class="form-inline">
+	<div class="form-group">
+		<label for="exampleInputEmail2">Email</label>
+		<input id="email_input" type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
+	</div>
+	<button id="submit" type="submit" class="btn btn-default">提交</button>
+</div>
+
+<script>
+    let emailInput = $("#email_input");
+    emailInput.on('blur', () => {
+        var email = emailInput.val();
+        console.log(email);
+        $.ajax({
+            url: '/yanzheng',
+            data: {
+                email: email
+            },
+            type: 'GET',
+            success: (result) => {
+                console.log(result)
+            },
+            error: (err) => {
+                console.log(err)
+            }
+
+        })
+    })
+
+</script>
+</body>
+</html>

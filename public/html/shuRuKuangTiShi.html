@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<script src="../js/jquery-3.5.1.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/template-web.js"></script>
+</head>
+<body>
+<div class="row">
+	<div class="col-lg-6">
+		<div class="input-group input-group-lg">
+			<input id="keyInp" type="text" class="form-control" placeholder="Search for...">
+			<span class="input-group-btn">
+                <button class="btn btn-default" type="button"><span
+		                class="glyphicon glyphicon-search"></span>Go!</button>
+			</span>
+		</div><!-- /input-group -->
+		<ul id="tishiList" class="list-group"></ul>
+	</div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+
+<script type="text/html" id="tpl">
+	{{each result}}
+	<li class="list-group-item">{{$value}}</li>
+	{{/each}}
+</script>
+
+<script>
+    let keyInp = $("#keyInp");
+    let tishi = $("#tishiList");
+    let timer = null;
+    keyInp.on("input", () => {
+        clearTimeout(timer);
+        key = keyInp.val();
+        //防止过多向服务器发送请求,设置延时处理
+        timer = setTimeout(function () {
+
+            if (key.trim().length == 0){
+                console.log('asdf')
+                tishi.css('display', 'none');
+                return;
+            }
+            
+            $.ajax({
+                url: '/shurutishi',
+                type: 'GET',
+                data: {
+                    key: key
+                },
+                success: (result) => {
+                    var html = template('tpl', {result: result});
+                    tishi.html(html);
+                    tishi.css('display', 'block');
+                },
+                error: (err) => {
+                    console.log(err)
+                }
+            })
+        }, 800);
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
+	<link rel="stylesheet" href="../css/nprogress/nprogress.css">
+	<script src="../js/jquery-3.5.1.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/template-web.js"></script>
+	<script src="../js/nprogress/nprogress.js"></script>
+</head>
+<body>
+<div style="width: 1200px;margin: 0 auto">
+	<form id="formdata">
+		<input type="file" id="file" multiple>
+	</form>
+	<div class="img">
+	
+	</div>
+	<div class="progress">
+		<div id="rate" class="progress-bar" role="progressbar" aria-valuenow="60"
+		     aria-valuemin="0" aria-valuemax="100">
+			<span class="sr-only" style="color: white;">40% 完成</span>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+        var file = $("#file");
+        file.change(function () {
+            // 将普通的html表单转成formdata表单对象
+            var formdata = new FormData();
+            formdata.append('attrFile', file.prop('files')[0]);
+            if (file.prop('files')[0]) {
+                console.log(123456);
+                $(document).on('ajaxStart', ()=>{
+                    NProgress.start();
+                });
+                $(document).on('ajaxComplete', ()=>{
+                    NProgress.done();
+                });
+                $.ajax({
+                    url: '/formdata',
+                    type: 'POST',
+                    data: formdata,
+	                cache: false,
+                    processData: false,
+                    contentType: false,
+                    xhr: () => {
+                        var xhr = new XMLHttpRequest();
+                        // xhr.upload.addEventListener('progress', (e) => {
+                        //     console.log(e);
+                        // })
+                        xhr.upload.addEventListener('progress', function (e) {
+                            var progressRate = (e.loaded / e.total) * 100 + '%';
+                            console.log(progressRate);
+                            $("#rate").css('width', progressRate);
+                            $("#rate").text(progressRate);
+                        });
+
+                        return xhr;
+                    },
+                    success: (result) => {
+                        // console.log(result.path);
+                        var $img = $('<img/>');
+                        $img.attr('src', result.path);
+                        $img.on('load', () => {
+                            $(".img").append($img);
+                        })
+                    },
+                    error: (err) => {
+                        console.log(err);
+                    }
+                })
+            }
+        })
+
+
+        // var formdata = new FormData();
+        // document.getElementById('file').onchange = function () {
+        //     // 将普通的html表单转成formdata表单对象
+        //     var formdata = new FormData();
+        //     formdata.append('file', this.files[0]);
+        //     $.ajax({
+        //         url: '/formdata',
+        //         type: 'POST',
+        //         data: formdata,
+        //         processData: false,
+        //         contentType: false,
+        //         success: (result) => {
+        //             console.log(result);
+        //         },
+        //         error: (err) => {
+        //             console.log(err);
+        //         }
+        //     })
+        // }
+	</script>
+</div>
+</body>
+</html>
